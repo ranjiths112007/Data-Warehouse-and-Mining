@@ -1,0 +1,67 @@
+name: Sync DWM source files
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Replace repository with source files
+        run: |
+          set -e
+          git rm -rf . ':!.gitignore' 2>/dev/null || true
+          curl -L --fail -o 'CMD Screenshot.png' 'https://raw.githubusercontent.com/VIDHYASRI-ASML24011/DataWarehousing-and-Mining/main/CMD%20Screenshot.png'
+          curl -L --fail -o 'DWM-TASK_2.png' 'https://raw.githubusercontent.com/VIDHYASRI-ASML24011/DataWarehousing-and-Mining/main/DWM-TASK_2.png'
+          curl -L --fail -o 'VS Code Screenshot.png' 'https://raw.githubusercontent.com/VIDHYASRI-ASML24011/DataWarehousing-and-Mining/main/VS%20Code%20Screenshot.png'
+          cat > README.md <<'MD'
+# Data Warehousing & Mining
+
+A practical collection of my **Data Warehousing and Data Mining (DWM)** coursework. This repository keeps the task work, screenshots, and practical outputs together in one place so the work is easy to understand and revisit.
+
+## 📚 What this repository covers
+
+The work focuses on practical data-mining and data-warehousing concepts such as:
+
+- **OLAP operations** — slice, dice, roll-up and drill-down
+- **Data representation and analysis** using NumPy
+- **Association rule mining** and FP-Growth
+- **External sorting / data processing** techniques
+- Practical task outputs and screenshots from the coursework
+
+## 📁 Repository contents
+
+| File | Purpose |
+| --- | --- |
+| `CMD Screenshot.png` | Screenshot showing command-line/task execution evidence |
+| `DWM-TASK_2.png` | DWM practical task output/evidence |
+| `VS Code Screenshot.png` | Development environment evidence from the original coursework repository |
+
+## 🛠️ Tools & Technologies
+
+**Python · NumPy · Jupyter Notebook · Data Warehousing · Data Mining · PostgreSQL · VS Code**
+
+## 🎯 Learning focus
+
+This repository is mainly about understanding how data can be **organized, processed, transformed and mined for useful patterns**. The practical work connects the concepts from the DWM course with actual implementations rather than keeping everything theoretical.
+
+## 📝 Note
+
+The screenshots are included as practical/submission evidence. The notebooks and task implementations are kept alongside the evidence so the work can be reviewed as a complete coursework collection.
+
+---
+
+Built as part of my Data Warehousing & Mining coursework.
+MD
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'Sync DWM coursework files' || exit 0
+          git push
+          rm -f .github/workflows/sync-dwm.yml
+          git add -A
+          git commit -m 'Remove one-time sync workflow' || true
+          git push || true
